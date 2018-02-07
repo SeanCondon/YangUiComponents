@@ -1,0 +1,23 @@
+<div [formGroup]="leafStringForm">
+<label for="leafStringValue">{{ attrName }} (String)</label>
+<input [formControl]="leafStringForm.controls['leafStringValue']" type="text" class="form-control"
+  required formControlName="leafStringValue" >
+
+
+  <div *ngIf="leafStringForm.controls['leafStringValue'].invalid && (leafStringForm.controls['leafStringValue'].dirty || leafStringForm.controls['leafStringValue'].touched)"
+       class="alert alert-danger">
+
+    <div *ngIf="leafStringForm.controls['leafStringValue'].errors.required">
+      {{ attrName }} is required.
+    </div>
+    <div *ngIf="leafStringForm.controls['leafStringValue'].errors.minlength">
+      {{ attrName }} must be at least {{ minLength }} characters long.
+    </div>
+    <div *ngIf="leafStringForm.controls['leafStringValue'].errors.maxlength">
+      {{ attrName }} must not be more than {{ maxLength }} characters long.
+    </div>
+    <div *ngIf="leafStringForm.controls['leafStringValue'].errors.pattern">
+      {{ attrName }} does not match Regular Expression pattern(s).
+    </div>
+  </div>
+</div>
