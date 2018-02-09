@@ -1,6 +1,6 @@
 <div [formGroup]="leafNumberForm">
-<label for="leafNumberValue">{{ attrName }} (String)</label>
-<input [formControl]="leafNumberForm.controls['leafNumberValue']" type="text" class="form-control"
+<label for="leafNumberValue">{{ typenames[numberType] }} ({{ activeMin }}-{{ activeMax }}) {{ range }}</label>
+<input [formControl]="leafNumberForm.controls['leafNumberValue']" type="number" class="form-control"
   required formControlName="leafNumberValue" >
 
 
@@ -13,13 +13,13 @@
       {{ attrName }} is required.
     </div>
     <div *ngIf="leafNumberForm.controls['leafNumberValue'].errors.min">
-      {{ attrName }} must be at least {{ min }}.
+      {{ attrName }} must be at least {{ activeMin }}.
     </div>
     <div *ngIf="leafNumberForm.controls['leafNumberValue'].errors.max">
-      {{ attrName }} must not be more than {{ max }}.
+      {{ attrName }} must not be more than {{ activeMax }}.
     </div>
     <div *ngIf="leafNumberForm.controls['leafNumberValue'].errors.range">
-      {{ attrName }} does not match range.
+      {{ attrName }} does not match range {{ range }}.
     </div>
   </div>
 </div>

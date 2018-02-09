@@ -14,7 +14,13 @@ export class YangMetaService {
       units: null,
       default: null,
       reference: null,
-      mandatory: true
+      mandatory: true,
+      minLength: 5,
+      maxLength: 10,
+      min: null,
+      max:null,
+      patterns: null,
+      range: null
     };
 
     const leaf3b: YangLeafNode = {
@@ -26,7 +32,13 @@ export class YangMetaService {
       units: "mV",
       default: 5,
       reference: "A short reference",
-      mandatory: false
+      mandatory: false,
+      minLength: null,
+      maxLength: null,
+      min: null,
+      max: null,
+      patterns: null,
+      range: "1..2|10..12|20..22"
     };
 
     const leaf3c: YangLeafNode = {
@@ -38,7 +50,13 @@ export class YangMetaService {
       units: "mm",
       default: 150000,
       reference: "RFC 6020 s1.3",
-      mandatory: false
+      mandatory: false,
+      minLength: null,
+      maxLength: null,
+      min: null,
+      max:null,
+      patterns: null,
+      range: null
     };
 
     const cont2a: YangContainerNode = {

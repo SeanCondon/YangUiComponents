@@ -1,5 +1,21 @@
 # YangComponents
 
+This is a prototype for a YANG configuration editor and viewer.
+
+The design is to have a set of Angular Web Components represent the 4 main Data
+Node types of YANG - Container, List, Leaf and Leaf-List for viewing and configuring
+a YANG data model. This is extended by specific constrained input components for
+particular leaf types - e.g. number with range and string with pattern - to give
+a fully featured and scalable solution for editing data models.
+
+The idea is that these componenets could be freely assembled in to a page to suit
+the end users tastes, and that the whole UI would be driven off some Meta model
+derived from YANG but in JSON format. Like "pyang -f jtox <yang files>" produces
+but a whole lot more information. It's possible such a file could be produced on
+the fly inside a system like onos-yang-tools also, and served up through
+onos/restconf/meta
+
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.6.6.
 
 ## Development server

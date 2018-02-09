@@ -12,7 +12,12 @@
   <div class="row" id="secondRow">
     <div class="col-lg-3 col-sm-4">
       <i *ngIf="leafModel.config" class="glyphicon glyphicon-pencil"></i>
-      <input *ngIf="leafModel.config">{{ value }}
+      <div [ngSwitch]="leafModel.typedef">
+        <yang-string-value *ngSwitchCase="0" [minLength]="leafModel.minLength" [maxLength]="leafModel.maxLength" [attrName]="leafModel.name"></yang-string-value>
+        <yang-numeric-value *ngSwitchCase="1" id="uint8" [numberType]="1" [minimum]="leafModel.min" [maximum]="leafModel.max" [range]=leafModel.range [attrName]="leafModel.name"></yang-numeric-value>
+        <yang-numeric-value *ngSwitchCase="2" id="uint16" [numberType]="2" [minimum]="leafModel.min" [maximum]="leafModel.max" [range]=leafModel.range [attrName]="leafModel.name"></yang-numeric-value>
+        <ng-template ngSwitchDefault>YangType enum {{yangType}} not implemented</ng-template>
+      </div>
       <label *ngIf="leafModel.units">{{ leafModel.units }}</label>
       <span *ngIf="leafModel.default" class="label label-info">Default: {{ leafModel.default }}</span>
     </div>

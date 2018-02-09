@@ -1,16 +1,17 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Validators, ValidatorFn, FormGroup, FormControl } from '@angular/forms';
+import { YangLeafValueComponent } from '../YangDataNodes';
 
 @Component({
   selector: 'yang-string-value',
   templateUrl: './yang-string-value.component.html',
   styleUrls: ['./yang-string-value.component.css']
 })
-export class YangStringValueComponent implements OnInit {
+export class YangStringValueComponent implements YangLeafValueComponent, OnInit {
   @Input() patterns: RegExp[];
-  @Input() attrName: string = "Value";
   @Input() minLength: number;
   @Input() maxLength: number;
+  @Input() attrName: string = "Value";
 
   leafValue: string;
   validators: ValidatorFn[] = [];

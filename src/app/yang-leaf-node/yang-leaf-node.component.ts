@@ -11,9 +11,12 @@ export class YangLeafNodeComponent implements OnInit {
   value: any;
   exists: boolean = false;
 
+  yangType: YangType;
+
   constructor() { }
 
   ngOnInit() {
+    this.yangType = this.leafModel.typedef;
   }
 
 }
