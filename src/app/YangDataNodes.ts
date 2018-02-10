@@ -2,10 +2,18 @@
 export interface YangDataNode {
   id: number;
   name: string;
+  nodeType: NodeType;
   description: string;
   reference: string;
   config: boolean;
   mandatory: boolean;
+}
+
+export enum NodeType {
+  container,
+  list,
+  leaf,
+  leaflist
 }
 
 export interface YangChoice {
@@ -31,7 +39,7 @@ export interface YangContainerNode extends YangDataNode {
   choices: YangChoice[];
 }
 
-export interface YangListNode extends YangDataNode {
+export interface YangListNode extends YangContainerNode {
   key: YangLeafNode[]; //There can be more than one key
   minElements: number;
   maxElements: number;
@@ -52,12 +60,4 @@ export enum YangType {
   int16,
   int32,
   int64
-}
-
-//Represent a sub portion of a range
-export interface YangSubRange {
-  start: number;
-  end: number;
-
-  test(testValue: number): boolean;
 }

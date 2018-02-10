@@ -1,34 +1,24 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { YangMetaService } from './YangMetaService';
+import { YangDataService } from './YangDataService';
 import { YangDataNode, YangLeafNode, YangType, YangContainerNode } from './YangDataNodes';
-import { ITreeOptions, TreeComponent } from 'angular-tree-component';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'Yang Components Demo';
-  yangMetaModel: YangDataNode[];
-  sampleLeaf3a: YangLeafNode;
-  sampleLeaf3b: YangLeafNode;
-  sampleLeaf3c: YangLeafNode;
+  yangMetaService: YangMetaService;
+  yangDataService: YangDataService = null;
 
   constructor() {
-    const yangMetaService: YangMetaService = new YangMetaService();
-    this.yangMetaModel = yangMetaService.yangMetaModel;
-    this.sampleLeaf3a = (((this.yangMetaModel[0] as YangContainerNode).children[0] as YangContainerNode).children[0] as YangLeafNode);
-    this.sampleLeaf3b = (((this.yangMetaModel[0] as YangContainerNode).children[0] as YangContainerNode).children[1] as YangLeafNode);
-    this.sampleLeaf3c = (((this.yangMetaModel[0] as YangContainerNode).children[0] as YangContainerNode).children[2] as YangLeafNode);
   }
 
-  @ViewChild('tree') treeComponent: TreeComponent;
-  ngAfterViewInit() {
-    //this.treeComponent.treeModel.expandAll();
-  }
-  options: ITreeOptions = {
-      isExpandedField: 'expanded',
+  ngOnInit() {
+    this.yangMetaService = new YangMetaService();
+    this.yangDataService = new YangDataService(this.yangMetaService.yangMetaModel);
   }
 
   invalid() {

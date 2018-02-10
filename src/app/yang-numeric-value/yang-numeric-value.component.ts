@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { YangSubRange, YangLeafValueComponent, YangType } from '../YangDataNodes';
+import { YangLeafValueComponent, YangType } from '../YangDataNodes';
 import { Validators, ValidatorFn, ValidationErrors, AbstractControl, FormGroup, FormControl } from '@angular/forms';
 
 @Component({
@@ -14,8 +14,7 @@ export class YangNumericValueComponent implements YangLeafValueComponent, OnInit
   @Input() decimalPlaces: number;
   @Input() range: string;
   @Input() attrName: string = "Value";
-
-  leafValue: number;
+  @Input() leafValue: number;
   validators: ValidatorFn[] = [];
   leafNumberForm: FormGroup;
   activeMin: number;
@@ -81,14 +80,14 @@ export class YangNumericValueComponent implements YangLeafValueComponent, OnInit
       } else {
         rangeStart = parseInt(rangePart);
       }
-      let newRange: YangSubRange = new YangSubRangeImpl(rangeStart, rangeEnd);
+      let newRange: YangSubRange = new YangSubRange(rangeStart, rangeEnd);
       ranges.push(newRange);
     }
     return ranges;
   }
 }
 
-export class YangSubRangeImpl implements YangSubRange {
+export class YangSubRange {
   start: number;
   end: number;
 

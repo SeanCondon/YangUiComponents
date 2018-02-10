@@ -8,8 +8,10 @@ import { YangLeafNode, YangType } from '../YangDataNodes';
 })
 export class YangLeafNodeComponent implements OnInit {
   @Input() leafModel: YangLeafNode;
-  value: any;
+  @Input() dn: string;
+  @Input() value: any;
   exists: boolean = false;
+  editMode: boolean = false;
 
   yangType: YangType;
 
@@ -19,4 +21,11 @@ export class YangLeafNodeComponent implements OnInit {
     this.yangType = this.leafModel.typedef;
   }
 
+  toggleEdit() {
+    this.editMode = !this.editMode;
+  }
+
+  applyDefault() {
+    this.value = this.leafModel.default;
+  }
 }

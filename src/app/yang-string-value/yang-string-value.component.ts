@@ -12,8 +12,7 @@ export class YangStringValueComponent implements YangLeafValueComponent, OnInit 
   @Input() minLength: number;
   @Input() maxLength: number;
   @Input() attrName: string = "Value";
-
-  leafValue: string;
+  @Input() leafValue: string;
   validators: ValidatorFn[] = [];
   leafStringForm: FormGroup;
   constructor() {

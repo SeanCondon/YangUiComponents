@@ -1,8 +1,8 @@
 <div class="panel panel-default">
   <div class="row" id="firstRow">
     <div class="col-lg-3 col-sm-4">
-      <span class="label label-info">Leaf</span>
-      <h3 color="blue">{{ leafModel.name }}</h3>
+
+      <h3 style="color:blue;"><small><span class="label label-info">Leaf</span></small>&nbsp;&nbsp;{{ leafModel.name }}</h3>
     </div>
     <div class="col-lg-9 col-sm-8 panel panel-default">
       <blockquote><small>{{ leafModel.description }}</small></blockquote>
@@ -11,25 +11,15 @@
   </div>
   <div class="row" id="secondRow">
     <div class="col-lg-3 col-sm-4">
-      <i *ngIf="leafModel.config" class="glyphicon glyphicon-pencil"></i>
-      <div [ngSwitch]="leafModel.typedef">
-        <yang-string-value *ngSwitchCase="0" [minLength]="leafModel.minLength" [maxLength]="leafModel.maxLength" [attrName]="leafModel.name"></yang-string-value>
-        <yang-numeric-value *ngSwitchCase="1" id="uint8" [numberType]="1" [minimum]="leafModel.min" [maximum]="leafModel.max" [range]=leafModel.range [attrName]="leafModel.name"></yang-numeric-value>
-        <yang-numeric-value *ngSwitchCase="2" id="uint16" [numberType]="2" [minimum]="leafModel.min" [maximum]="leafModel.max" [range]=leafModel.range [attrName]="leafModel.name"></yang-numeric-value>
-        <ng-template ngSwitchDefault>YangType enum {{yangType}} not implemented</ng-template>
+      <i *ngIf="leafModel.config" class="glyphicon glyphicon-pencil" (click)="toggleEdit()"></i>
+      <div *ngIf="leafModel.config && editMode" [ngSwitch]="leafModel.typedef">
+        <yang-string-value *ngSwitchCase="0" [minLength]="leafModel.minLength" [maxLength]="leafModel.maxLength" [attrName]="leafModel.name" [leafValue]="value"></yang-string-value>
+        <yang-numeric-value *ngSwitchCase="1" id="uint8" [numberType]="1" [minimum]="leafModel.min" [maximum]="leafModel.max" [range]=leafModel.range [attrName]="leafModel.name" [leafValue]="value"></yang-numeric-value>
+        <yang-numeric-value *ngSwitchCase="2" id="uint16" [numberType]="2" [minimum]="leafModel.min" [maximum]="leafModel.max" [range]=leafModel.range [attrName]="leafModel.name" [leafValue]="value"></yang-numeric-value>
+        <ng-template ngSwitchDefault>YangType {{yangType}} not implemented</ng-template>
+        <span *ngIf="leafModel.default" class="label label-info" (click)="applyDefault()">Default: {{ leafModel.default }}</span>
       </div>
-      <label *ngIf="leafModel.units">{{ leafModel.units }}</label>
-      <span *ngIf="leafModel.default" class="label label-info">Default: {{ leafModel.default }}</span>
-    </div>
-    <div class="col-lg-3 col-sm-4">
-      <button *ngIf="!exists" type="button"
-        class="btn btn-default btn-sm">
-        <i class="glyphicon glyphicon-plus">Set</i>
-      </button>
-      <button *ngIf="exists" type="button"
-        class="btn btn-default btn-sm">
-        <i class="glyphicon glyphicon-minus">Unset</i>
-      </button>
+      <div *ngIf="!leafModel.config || !editMode">Value: {{ value }}<small><span *ngIf="leafModel.units">{{ leafModel.units }}</span></small></div>
     </div>
   </div>
 </div>
