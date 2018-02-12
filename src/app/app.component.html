@@ -3,12 +3,12 @@
   <h1>
     Welcome to {{ title }}!
   </h1>
-  <div *ngFor="let dn of yangMetaService.metaIndex.keys()">
-    <div [ngSwitch]="yangMetaService.metaIndex.get(dn).nodeType">
-      <container *ngSwitchCase="0" [containerModel]="yangMetaService.metaIndex.get(dn)" [dn]="dn"></container>
-      <p *ngSwitchCase="1">List Node</p>
-      <leaf *ngSwitchCase="2" [leafModel]="yangMetaService.metaIndex.get(dn)" [dn]="dn" [value]="yangDataService.yangValueMap.get(dn)"></leaf>
-      <p *ngSwitchCase="3">Leaf List Node</p>
+  <div *ngFor="let dn of appYangMetaService.metaIndex.keys()">
+    <div [ngSwitch]="appYangMetaService.metaIndex.get(dn).nodeType">
+      <container *ngSwitchCase="0" [containerModel]="appYangMetaService.metaIndex.get(dn)" [dn]="dn"></container>
+      <list *ngSwitchCase="1" [listModel]="appYangMetaService.metaIndex.get(dn)" [dn]="dn" [valuesMap]="yangDataService.yangValueMap"></list>
+      <leaf *ngSwitchCase="2" [leafModel]="appYangMetaService.metaIndex.get(dn)" [dn]="dn" [value]="yangDataService.yangValueMap.get(dn)"></leaf>
+      <p *ngSwitchCase="3">Leaf List Node not yet implemented</p>
     </div>
   </div>
 </div>

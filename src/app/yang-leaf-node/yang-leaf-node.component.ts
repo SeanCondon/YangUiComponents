@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { YangLeafNode, YangType } from '../YangDataNodes';
+import { YangLeafNode, YangType, YangDataNode, YangContainerNode } from '../YangDataNodes';
 
 @Component({
   selector: 'leaf',

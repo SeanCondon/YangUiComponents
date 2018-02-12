@@ -1,6 +1,6 @@
 <div class="panel panel-default">
   <div class="row" id="firstRow">
-    <div class="col-lg-3 col-sm-4">
+    <div class="col-lg-6 col-sm-4">
 
       <h3 style="color:blue;"><small><span class="label label-info">Leaf</span></small>&nbsp;&nbsp;{{ leafModel.name }}</h3>
     </div>
@@ -10,7 +10,7 @@
     </div>
   </div>
   <div class="row" id="secondRow">
-    <div class="col-lg-3 col-sm-4">
+    <div class="col-lg-6 col-sm-4">
       <i *ngIf="leafModel.config" class="glyphicon glyphicon-pencil" (click)="toggleEdit()"></i>
       <div *ngIf="leafModel.config && editMode" [ngSwitch]="leafModel.typedef">
         <yang-string-value *ngSwitchCase="0" [minLength]="leafModel.minLength" [maxLength]="leafModel.maxLength" [attrName]="leafModel.name" [leafValue]="value"></yang-string-value>

@@ -1,7 +1,8 @@
 import { YangDataNode, YangLeafNode, YangContainerNode, YangListNode, YangType, NodeType } from './YangDataNodes';
 
+
 /// Local Data Service
-export class YangMetaService {
+class YangMetaService {
   public yangMetaModel: Array<YangDataNode> = [];
   public metaIndex: Map<String,YangDataNode> = new Map();
 
@@ -117,9 +118,9 @@ export class YangMetaService {
       choices: []
     };
 
-    const cont2b: YangListNode = {
+    const list2b: YangListNode = {
       id: 22,
-      name: "cont2b",
+      name: "list2b",
       nodeType: NodeType.list,
       description: "container for 3a and 3b",
       config: true,
@@ -146,7 +147,7 @@ export class YangMetaService {
       mandatory: true,
       children: [
         cont2a,
-        cont2b
+        list2b
       ],
       choices: []
     };
@@ -156,9 +157,9 @@ export class YangMetaService {
     this.metaIndex.set("/cont1a/cont2a/leaf3a",leaf3a);
     this.metaIndex.set("/cont1a/cont2a/leaf3b",leaf3b);
     this.metaIndex.set("/cont1a/cont2a/leaf3c",leaf3c);
-    this.metaIndex.set("/cont1a/cont2b",cont2b);
-    this.metaIndex.set("/cont1a/cont2b/leaf3d",leaf3d);
-    this.metaIndex.set("/cont1a/cont2b/leaf3e",leaf3e);
+    this.metaIndex.set("/cont1a/list2b",list2b);
+    this.metaIndex.set("/cont1a/list2b/leaf3d",leaf3d);
+    this.metaIndex.set("/cont1a/list2b/leaf3e",leaf3e);
 
     this.yangMetaModel = [
       cont1a
@@ -200,3 +201,5 @@ export class YangMetaService {
     }
   }
 }
+
+export var yangMetaService: YangMetaService = new YangMetaService();

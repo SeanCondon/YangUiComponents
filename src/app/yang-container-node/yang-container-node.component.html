@@ -1,16 +1,16 @@
 <div class="panel panel-default">
   <div class="row" id="firstRow">
-    <div class="col-lg-3 col-sm-4">
+    <div class="col-lg-6 col-sm-8">
 
       <h3 style="color:blue;"><small><span class="label label-info">Container</span></small>&nbsp;&nbsp;{{ containerModel.name }}</h3>
     </div>
-    <div class="col-lg-9 col-sm-8 panel panel-default">
+    <div class="col-lg-6 col-sm-4 panel panel-default">
       <blockquote><small>{{ containerModel.description }}</small></blockquote>
       <small *ngIf="containerModel.reference" class="text-muted">Ref: {{ containerModel.reference }}</small>
     </div>
   </div>
   <div class="row" id="secondRow">
-    <div class="col-lg-3 col-sm-4">
+    <div class="col-lg-6 col-sm-6">
       <i *ngIf="containerModel.config" class="glyphicon glyphicon-pencil" (click)="toggleEdit()"></i>
     </div>
   </div>
