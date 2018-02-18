@@ -16,9 +16,9 @@
         <i *ngIf="listModel.config && listNodes.size > listModel.minElements" class="glyphicon glyphicon-minus-sign">Remove</i>
         <div *ngFor="let childNode of childNodes.keys()">
           <p>{{ childNode }}</p>
-          <div [ngSwitch]="listYangMetaService.metaIndex.get(removePredicate(childNode)).nodeType">
-            <container *ngSwitchCase="0" [containerModel]="listYangMetaService.metaIndex.get(listNodeDn.substr(0,listNodeDn.lastIndexOf('=')))" [dn]="listNodeDn"></container>
-            <leaf *ngSwitchCase="2" [leafModel]="listYangMetaService.metaIndex.get(removePredicate(childNode))" [dn]="childNode" [value]="20"></leaf>
+          <div [ngSwitch]="yangMetaService.metaIndex.get(removePredicate(childNode)).nodeType">
+            <container *ngSwitchCase="0" [containerModel]="yangMetaService.metaIndex.get(listNodeDn.substr(0,listNodeDn.lastIndexOf('=')))" [dn]="listNodeDn"></container>
+            <leaf *ngSwitchCase="2" [leafModel]="yangMetaService.metaIndex.get(removePredicate(childNode))" [dn]="childNode" [value]="20"></leaf>
           </div>
         </div>
       </div>

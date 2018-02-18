@@ -9,6 +9,7 @@
       "outDir": "dist",
       "assets": [
         "assets",
+        "yangs/test1.json",
         "favicon.ico"
       ],
       "index": "index.html",

@@ -1,6 +1,7 @@
 
 export interface YangDataNode {
   id: number;
+  namespace: string;
   name: string;
   nodeType: NodeType;
   description: string;
@@ -59,5 +60,6 @@ export enum YangType {
   int8,
   int16,
   int32,
-  int64
+  int64,
+  decimal64,
 }

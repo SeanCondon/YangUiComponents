@@ -1,0 +1,49 @@
+{
+    "annotations": {},
+    "modules": {
+        "test1": [
+            "test1",
+            "http://yanguicomponenets.org/test1"
+        ]
+    },
+    "tree": {
+        "test1:cont1a": [
+            "container",
+            {
+                "cont2a": [
+                    "container",
+                    {
+                        "leaf2a": [
+                            "leaf",
+                            "uint8"
+                        ],
+                        "leaf2b": [
+                            "leaf",
+                            [
+                                "decimal64",
+                                3
+                            ]
+                        ],
+                        "leaf3a": [
+                            "leaf",
+                            "string"
+                        ]
+                    }
+                ],
+                "leaf1a": [
+                    "leaf",
+                    "string"
+                ]
+            }
+        ],
+        "test1:cont1b-state": [
+            "container",
+            {
+                "cont1b": [
+                    "leaf",
+                    "uint16"
+                ]
+            }
+        ]
+    }
+}

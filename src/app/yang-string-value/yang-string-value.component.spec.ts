@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
 import { Validators, ValidatorFn, FormGroup, FormControl } from '@angular/forms';
 import { YangStringValueComponent } from './yang-string-value.component';
 
@@ -8,7 +9,10 @@ describe('YangStringValueComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ YangStringValueComponent ]
+      declarations: [ YangStringValueComponent ],
+      imports: [
+        ReactiveFormsModule
+      ]
     })
     .compileComponents();
   }));

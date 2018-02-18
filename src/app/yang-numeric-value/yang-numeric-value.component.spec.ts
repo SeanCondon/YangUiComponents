@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { ReactiveFormsModule } from '@angular/forms';
+import { Validators, ValidatorFn, FormGroup, FormControl } from '@angular/forms';
 import { YangNumericValueComponent } from './yang-numeric-value.component';
 
 describe('YangNumericValueComponent', () => {
@@ -8,7 +9,10 @@ describe('YangNumericValueComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ YangNumericValueComponent ]
+      declarations: [ YangNumericValueComponent ],
+      imports: [
+        ReactiveFormsModule
+      ]
     })
     .compileComponents();
   }));

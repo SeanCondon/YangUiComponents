@@ -1,8 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { YangDataNode, YangListNode } from '../YangDataNodes';
-
-//Global metadata service
-import { yangMetaService } from '../YangMetaService';
+import { YangMetaService } from '../YangMetaService';
 
 @Component({
   selector: 'list',
@@ -14,14 +12,16 @@ export class YangListNodeComponent implements OnInit {
   @Input() dn: string;
   @Input() valuesMap: Map<String, any>;
 
-  listYangMetaService = yangMetaService;
   listNodes: Map<String, any> = new Map();
   childNodes: Map<String, any> = new Map();
+  metaKeys: Array<string>;
 
-  constructor() { }
+  constructor(public yangMetaService: YangMetaService) {
+    this.metaKeys = Array.from(yangMetaService.metaIndex.keys());
+  }
 
   ngOnInit() {
-    for (let key of Array.from( this.valuesMap.keys())) {
+    for (let key of this.metaKeys) {
       if (key.startsWith(this.dn) && key.lastIndexOf("=") == this.dn.length && key.lastIndexOf("/") < this.dn.length ) {
         this.listNodes.set(key, this.valuesMap.get(key));
       }

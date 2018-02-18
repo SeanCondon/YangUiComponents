@@ -1,0 +1,52 @@
+module test1 {
+  namespace "http://yanguicomponenets.org/test1";
+  prefix test1;
+
+  container cont1a {
+    description "The top level container";
+
+    container cont2a {
+      description "The top level container";
+
+      leaf leaf2a {
+        type uint8 {
+          range 1..3|11..13;
+        }
+        units dB;
+        description "Numeric leaf inside Container 2a";
+      }
+      leaf leaf2b {
+        type decimal64 {
+          fraction-digits 3;
+          range 0.001..2.000;
+        }
+        units mV;
+        description "Voltage leaf inside Container 2a";
+      }
+      leaf leaf3a {
+        type string;
+        config false;
+        description "Read only leaf inside Container 2a";
+      }
+    }
+
+    leaf leaf1a {
+      type string {
+        length 5..10;
+      }
+      description "Leaf inside Container 1a";
+    }
+
+
+  }
+
+  container cont1b-state {
+    description "A second top level container - this one for state attributes";
+    leaf cont1b {
+      type uint16 {
+        range 10000..20000;
+      }
+      units mm;
+    }
+  }
+}

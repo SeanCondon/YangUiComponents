@@ -1,6 +1,9 @@
 import { TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
+import { YangMetaService } from './YangMetaService';
+import { YangDataService } from './YangDataService';
 import { YangLeafNodeComponent } from './yang-leaf-node/yang-leaf-node.component';
 import { YangContainerNodeComponent } from './yang-container-node/yang-container-node.component';
 import { YangStringValueComponent } from './yang-string-value/yang-string-value.component';
@@ -19,8 +22,12 @@ describe('AppComponent', () => {
         YangListNodeComponent,
       ],
       imports: [
-        ReactiveFormsModule
-      ]
+        BrowserModule, ReactiveFormsModule
+      ],
+      providers: [
+        YangMetaService,
+        YangDataService
+      ],
     }).compileComponents();
   }));
   it('should create the app', async(() => {

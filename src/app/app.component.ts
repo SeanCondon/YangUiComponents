@@ -1,9 +1,8 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { YangDataService } from './YangDataService';
+import { YangMetaService } from './YangMetaService';
 import { YangDataNode, YangLeafNode, YangType, YangContainerNode } from './YangDataNodes';
 
-//Global metadata service
-import { yangMetaService } from './YangMetaService';
 
 @Component({
   selector: 'app-root',
@@ -12,17 +11,13 @@ import { yangMetaService } from './YangMetaService';
 })
 export class AppComponent implements OnInit {
   title = 'Yang Components Demo';
-  yangDataService: YangDataService = null;
-  appYangMetaService = yangMetaService;
+  metaKeys: Array<string>;
 
-  constructor() {
+  constructor(public yangMetaService: YangMetaService,
+              public yangDataService: YangDataService) {
+      this.metaKeys = Array.from(yangMetaService.metaIndex.keys());
   }
 
   ngOnInit() {
-    this.yangDataService = new YangDataService(yangMetaService.yangMetaModel);
-  }
-
-  invalid() {
-    console.log("Invalid value");
   }
 }

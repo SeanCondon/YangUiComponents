@@ -8,7 +8,7 @@ a YANG data model. This is extended by specific constrained input components for
 particular leaf types - e.g. number with range and string with pattern - to give
 a fully featured and scalable solution for editing data models.
 
-The idea is that these componenets could be freely assembled in to a page to suit
+The idea is that these components could be freely assembled in to a page to suit
 the end users tastes, and that the whole UI would be driven off some Meta model
 derived from YANG but in JSON format. Like "pyang -f jtox <yang files>" produces
 but a whole lot more information. It's possible such a file could be produced on
