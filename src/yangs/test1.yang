@@ -23,7 +23,7 @@ module test1 {
         units mV;
         description "Voltage leaf inside Container 2a";
       }
-      leaf leaf3a {
+      leaf leaf2c {
         type string;
         config false;
         description "Read only leaf inside Container 2a";
@@ -42,7 +42,7 @@ module test1 {
 
   container cont1b-state {
     description "A second top level container - this one for state attributes";
-    leaf cont1b {
+    leaf leaf2a {
       type uint16 {
         range 10000..20000;
       }

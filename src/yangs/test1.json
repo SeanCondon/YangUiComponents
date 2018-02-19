@@ -24,13 +24,13 @@
                                 3
                             ]
                         ],
-                        "leaf3a": [
+                        "leaf2c": [
                             "leaf",
                             "string"
                         ]
                     }
                 ],
-                "leaf1a": [
+                "leaf2a": [
                     "leaf",
                     "string"
                 ]
@@ -39,7 +39,7 @@
         "test1:cont1b-state": [
             "container",
             {
-                "cont1b": [
+                "leaf2b": [
                     "leaf",
                     "uint16"
                 ]

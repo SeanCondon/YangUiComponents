@@ -15,9 +15,16 @@ export class AppComponent implements OnInit {
 
   constructor(public yangMetaService: YangMetaService,
               public yangDataService: YangDataService) {
-      this.metaKeys = Array.from(yangMetaService.metaIndex.keys());
+
   }
 
   ngOnInit() {
+    this.yangMetaService.ngOnInit();
+    //TODO get rid of this dirty hack
+    setInterval(() => {
+      this.metaKeys = Array.from(this.yangMetaService.metaIndex.keys());
+      // console.log("Resfreshing");
+    }, 500);
   }
+
 }

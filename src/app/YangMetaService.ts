@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { HttpClient, HttpRequest } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { YangDataNode, YangLeafNode, YangContainerNode, YangListNode,
@@ -16,7 +16,7 @@ enum YangFileAttr {
 }
 /// Local Data Service
 @Injectable()
-export class YangMetaService {
+export class YangMetaService implements OnInit {
   public metaIndex: Map<string,YangDataNode> = new Map();
   private counter: number = 0;
 
@@ -43,27 +43,33 @@ export class YangMetaService {
       } else if (type === 'leaf') {
         let node = new YangLeafNodeImpl(this.counter++, "", yangKey, NodeType.leaf,
               "desc", "ref", true, false);
-        node.setTypedef(type);
+        if (typeof(children) === 'object') {
+          node.setTypedef(children[0]);
+        } else {
+          node.setTypedef(children);
+        }
         this.metaIndex.set(dnLocal, node);
         console.log("Created: ", dnLocal, type, node);
       }
     }
   }
 
-  constructor(private http: HttpClient) {
+  constructor(public http: HttpClient) {}
+
+  ngOnInit() {
     this.http.get<YangFileModel>('/restconf/data/meta/test1')
       .subscribe(data => {
           this.parseYangModel(data.tree, "");
         },
         err => console.log("Error occured.", err),
-        () => (console.log("Done"));
+        () => (console.log("Metadata loaded: ", this.metaIndex.size)));
     console.log("Elements: ", this.metaIndex.size);
   }
 }
 
 class YangLeafNodeImpl implements YangLeafNode {
   default: any;
-  typedef: YangType;
+  public typedef: YangType = YangType.string;
   units: string;
   min: number;
   max: number;
@@ -84,7 +90,7 @@ class YangLeafNodeImpl implements YangLeafNode {
       this.typedef = YangType.uint8;
     } else if (typeStr === 'uint16') {
       this.typedef = YangType.uint16;
-    } else if (typeStr === 'deimal64') {
+    } else if (typeStr === 'decimal64') {
       this.typedef = YangType.decimal64;
     }
   }
