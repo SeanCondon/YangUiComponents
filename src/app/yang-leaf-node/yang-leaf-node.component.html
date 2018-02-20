@@ -13,7 +13,7 @@
     <div class="col-lg-6 col-sm-4">
       <i *ngIf="leafModel.config" class="glyphicon glyphicon-pencil" (click)="toggleEdit()"></i>
       <div *ngIf="leafModel.config && editMode" [ngSwitch]="leafModel.typedef">
-        <yang-string-value *ngSwitchCase="0" [minLength]="leafModel.minLength" [maxLength]="leafModel.maxLength" [attrName]="leafModel.name" [leafValue]="value"></yang-string-value>
+        <yang-string-value *ngSwitchCase="0" [length]="leafModel.length" [attrName]="leafModel.name" [leafValue]="value"></yang-string-value>
         <yang-numeric-value *ngSwitchCase="1" id="uint8" [numberType]="1" [minimum]="leafModel.min" [maximum]="leafModel.max" [range]=leafModel.range [attrName]="leafModel.name" [leafValue]="value"></yang-numeric-value>
         <yang-numeric-value *ngSwitchCase="2" id="uint16" [numberType]="2" [minimum]="leafModel.min" [maximum]="leafModel.max" [range]=leafModel.range [attrName]="leafModel.name" [leafValue]="value"></yang-numeric-value>
         <ng-template ngSwitchDefault>YangType {{yangType}} not implemented</ng-template>

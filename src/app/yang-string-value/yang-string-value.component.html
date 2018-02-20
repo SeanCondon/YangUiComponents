@@ -11,10 +11,10 @@
       {{ attrName }} is required.
     </div>
     <div *ngIf="leafStringForm.controls['leafStringValue'].errors.minlength">
-      {{ attrName }} must be at least {{ minLength }} characters long.
+      {{ attrName }} must be {{ length }} characters long.
     </div>
     <div *ngIf="leafStringForm.controls['leafStringValue'].errors.maxlength">
-      {{ attrName }} must not be more than {{ maxLength }} characters long.
+      {{ attrName }} must be {{ length }} characters long.
     </div>
     <div *ngIf="leafStringForm.controls['leafStringValue'].errors.pattern">
       {{ attrName }} does not match Regular Expression pattern(s).

@@ -9,8 +9,7 @@ import { YangLeafValueComponent } from '../YangDataNodes';
 })
 export class YangStringValueComponent implements YangLeafValueComponent, OnInit {
   @Input() patterns: RegExp[];
-  @Input() minLength: number;
-  @Input() maxLength: number;
+  @Input() length: string;
   @Input() attrName: string = "Value";
   @Input() leafValue: string;
   validators: ValidatorFn[] = [];
@@ -19,11 +18,14 @@ export class YangStringValueComponent implements YangLeafValueComponent, OnInit 
   }
 
   ngOnInit(): void {
-    if (this.minLength) {
-      this.validators.push(Validators.minLength(this.minLength));
-    }
-    if (this.maxLength) {
-      this.validators.push(Validators.maxLength(this.maxLength));
+    if (this.length) {
+      if (this.length.includes('..')) {
+        let parts = this.length.split('..');
+        this.validators.push(Validators.minLength(parseInt(parts[0])));
+        this.validators.push(Validators.maxLength(parseInt(parts[1])));
+      } else {
+        this.validators.push(Validators.minLength(parseInt(this.length)));
+      }
     }
     if (this.patterns) {
       for (let pattern of this.patterns) {

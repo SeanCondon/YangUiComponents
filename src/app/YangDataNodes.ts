@@ -29,10 +29,11 @@ export interface YangLeafNode extends YangDataNode {
   units: string;
   min: number;
   max: number;
-  minLength: number;
-  maxLength: number;
+  length: string;
   patterns: RegExp[];
   range: string;
+
+  setTypedef(typeStr: string): void;
 }
 
 export interface YangContainerNode extends YangDataNode {

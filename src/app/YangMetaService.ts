@@ -23,33 +23,38 @@ export class YangMetaService implements OnInit {
   //Recursive function to convert file contents in to Map
   parseYangModel(yangTree: Object, dn: string) {
     for (let yangKey in yangTree) {
+      if (yangKey === 'description' || yangKey === 'nodeType' || yangKey === 'config') { continue; }
+      console.log("Handling ", yangKey);
       let dnLocal=dn+"/"+yangKey;
-      let type: string = yangTree[yangKey][0];
-      let children = yangTree[yangKey][1];
+      let type: string = yangTree[yangKey][0]['nodeType'];
+      let description: string = yangTree[yangKey][0]['description'];
+      let reference: string = yangTree[yangKey][0]['reference'];
+      let units: string = yangTree[yangKey][0]['units'];
+      let config: boolean = typeof(yangTree[yangKey][0]['config']) === 'undefined' || yangTree[yangKey][0]['config'];
+      let mandatory: boolean = yangTree[yangKey][0]['mandatory'];
+      let children = yangTree[yangKey][0];
+      let nodeTypeArr = yangTree[yangKey][0]['dataType'];
 
-      if (type === 'leaf' && typeof(children) === 'object') {
-        if (children[0] == 'decimal64') {
-          let decimalPlaces = children[1];
-        }
-      } else if (typeof(children) === 'object') {
+      if (type != 'leaf' && typeof(children) === 'object') {
         this.parseYangModel(children, dnLocal);
       }
 
       if (type === 'container') {
         let node = new YangContainerNodeImpl(this.counter++, "", yangKey, NodeType.leaf,
-              "desc", "ref", true, false);
+              description, reference, config, mandatory);
         this.metaIndex.set(dnLocal, node);
         console.log("Created: ", dnLocal, type, node);
       } else if (type === 'leaf') {
-        let node = new YangLeafNodeImpl(this.counter++, "", yangKey, NodeType.leaf,
-              "desc", "ref", true, false);
-        if (typeof(children) === 'object') {
-          node.setTypedef(children[0]);
-        } else {
-          node.setTypedef(children);
-        }
+        let node: YangLeafNode = new YangLeafNodeImpl(this.counter++, "", yangKey, NodeType.leaf,
+              description, reference, config, mandatory);
+        node.setTypedef(nodeTypeArr[0]['type']);
+        node.range = nodeTypeArr[0]['range'];
+        node.length = nodeTypeArr[0]['length'];
+        node.units = units;
         this.metaIndex.set(dnLocal, node);
         console.log("Created: ", dnLocal, type, node);
+      } else {
+        console.log("DN: " + dnLocal + " has unsupported type:", type);
       }
     }
   }
@@ -73,8 +78,7 @@ class YangLeafNodeImpl implements YangLeafNode {
   units: string;
   min: number;
   max: number;
-  minLength: number;
-  maxLength: number;
+  length: string;
   patterns: RegExp[];
   range: string;
 
