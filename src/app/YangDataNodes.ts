@@ -42,7 +42,7 @@ export interface YangContainerNode extends YangDataNode {
 }
 
 export interface YangListNode extends YangContainerNode {
-  key: YangLeafNode[]; //There can be more than one key
+  keys: string[]; //There can be more than one key
   minElements: number;
   maxElements: number;
 }

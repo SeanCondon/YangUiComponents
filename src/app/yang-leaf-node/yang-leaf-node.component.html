@@ -1,17 +1,15 @@
 <div class="panel panel-default">
   <div class="row" id="firstRow">
-    <div class="col-lg-6 col-sm-4">
-
-      <h3 style="color:blue;"><small><span class="label label-info">Leaf</span></small>&nbsp;&nbsp;{{ leafModel.name }}</h3>
-    </div>
-    <div class="col-lg-9 col-sm-8 panel panel-default">
-      <blockquote><small>{{ leafModel.description }}</small></blockquote>
-      <small *ngIf="leafModel.reference" class="text-muted">Ref: {{ leafModel.reference }}</small>
+    <div data-toggle="tooltip" title="{{ leafModel.description }}">
+        <i class="glyphicon glyphicon-tag"></i>
+        <i *ngIf="leafModel.config" class="glyphicon glyphicon-pencil" (click)="toggleEdit()"></i>
+        <span [ngClass]="{ 'light':leafModel.config, 'dark':!leafModel.config }">&nbsp;&nbsp;{{ leafModel.name }}</span>
+      <span *ngIf="!leafModel.config || !editMode">: {{ value }}</span>
+      <small><span *ngIf="leafModel.units">&nbsp;{{ leafModel.units }}</span></small>
     </div>
   </div>
   <div class="row" id="secondRow">
-    <div class="col-lg-6 col-sm-4">
-      <i *ngIf="leafModel.config" class="glyphicon glyphicon-pencil" (click)="toggleEdit()"></i>
+    <div class="col-lg-6 col-sm-6">
       <div *ngIf="leafModel.config && editMode" [ngSwitch]="leafModel.typedef">
         <yang-string-value *ngSwitchCase="0" [length]="leafModel.length" [attrName]="leafModel.name" [leafValue]="value"></yang-string-value>
         <yang-numeric-value *ngSwitchCase="1" id="uint8" [numberType]="1" [minimum]="leafModel.min" [maximum]="leafModel.max" [range]=leafModel.range [attrName]="leafModel.name" [leafValue]="value"></yang-numeric-value>
@@ -19,7 +17,6 @@
         <ng-template ngSwitchDefault>YangType {{yangType}} not implemented</ng-template>
         <span *ngIf="leafModel.default" class="label label-info" (click)="applyDefault()">Default: {{ leafModel.default }}</span>
       </div>
-      <div *ngIf="!leafModel.config || !editMode">Value: {{ value }}<small><span *ngIf="leafModel.units">{{ leafModel.units }}</span></small></div>
     </div>
   </div>
 </div>

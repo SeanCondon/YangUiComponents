@@ -1,4 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { YangMetaService } from '../YangMetaService';
+import { YangDataService } from '../YangDataService';
 import { YangDataNode, YangContainerNode } from '../YangDataNodes';
 
 @Component({
@@ -9,8 +11,9 @@ import { YangDataNode, YangContainerNode } from '../YangDataNodes';
 export class YangContainerNodeComponent implements OnInit {
   @Input() containerModel: YangContainerNode;
   @Input() dn: string;
-  
-  constructor() { }
+
+  constructor(public yangMetaService: YangMetaService,
+              public yangDataService: YangDataService) { }
 
   ngOnInit() {
   }

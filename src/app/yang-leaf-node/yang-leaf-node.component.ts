@@ -19,6 +19,7 @@ export class YangLeafNodeComponent implements OnInit {
 
   ngOnInit() {
     this.yangType = this.leafModel.typedef;
+
   }
 
   toggleEdit() {

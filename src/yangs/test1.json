@@ -1,15 +1,104 @@
 {
-    "modules": {
-        "test1": [
-            "test1",
-            "http://yanguicomponenets.org/test1"
-        ]
-    },
-    "annotations": {},
     "tree": {
+        "test1:leafAtTopLevel": [
+            {
+                "nodeType": "leaf",
+                "description": "A leaf at the top level (not recommended but must be supported)",
+                "dataType": [
+                    {
+                        "pattern": "[A-Z]{3}-[0-9]*",
+                        "type": "string"
+                    }
+                ]
+            }
+        ],
         "test1:cont1a": [
             {
                 "nodeType": "container",
+                "cont2a": [
+                    {
+                        "nodeType": "container",
+                        "leaf2a": [
+                            {
+                                "nodeType": "leaf",
+                                "dataType": [
+                                    {
+                                        "range": "1..3|11..13",
+                                        "type": "uint8"
+                                    }
+                                ],
+                                "default": "2",
+                                "description": "Numeric leaf inside Container 2a",
+                                "units": "dB",
+                                "reference": "RFC 6040"
+                            }
+                        ],
+                        "description": "The 2nd level container",
+                        "leaf2c": [
+                            {
+                                "nodeType": "leaf",
+                                "description": "Read only leaf inside Container 2a",
+                                "config": false,
+                                "dataType": [
+                                    {
+                                        "type": "string"
+                                    }
+                                ]
+                            }
+                        ],
+                        "leaf2b": [
+                            {
+                                "nodeType": "leaf",
+                                "config": true,
+                                "mandatory": true,
+                                "units": "mV",
+                                "dataType": [
+                                    {
+                                        "fraction-digits": 3,
+                                        "type": "decimal64",
+                                        "range": "0.001..2.000"
+                                    }
+                                ],
+                                "description": "Voltage leaf inside Container 2a"
+                            }
+                        ]
+                    }
+                ],
+                "list2a": [
+                    {
+                        "nodeType": "list",
+                        "keys": [
+                            "name"
+                        ],
+                        "tx-power": [
+                            {
+                                "nodeType": "leaf",
+                                "units": "mW",
+                                "description": "Transmit power",
+                                "dataType": [
+                                    {
+                                        "range": "1..20",
+                                        "type": "uint16"
+                                    }
+                                ]
+                            }
+                        ],
+                        "max-elements": "4",
+                        "description": "A simple list of configuration items",
+                        "name": [
+                            {
+                                "nodeType": "leaf",
+                                "description": "The list is keyed by name",
+                                "dataType": [
+                                    {
+                                        "length": "4..8",
+                                        "type": "string"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
                 "description": "The top level container",
                 "leaf1a": [
                     {
@@ -17,57 +106,8 @@
                         "description": "Leaf inside Container 1a",
                         "dataType": [
                             {
-                                "type": "string",
-                                "length": "5..10"
-                            }
-                        ]
-                    }
-                ],
-                "cont2a": [
-                    {
-                        "leaf2c": [
-                            {
-                                "nodeType": "leaf",
-                                "dataType": [
-                                    {
-                                        "type": "string"
-                                    }
-                                ],
-                                "description": "Read only leaf inside Container 2a",
-                                "config": false
-                            }
-                        ],
-                        "nodeType": "container",
-                        "description": "The 2nd level container",
-                        "leaf2b": [
-                            {
-                                "mandatory": true,
-                                "description": "Voltage leaf inside Container 2a",
-                                "units": "mV",
-                                "nodeType": "leaf",
-                                "config": true,
-                                "dataType": [
-                                    {
-                                        "range": "0.001..2.000",
-                                        "type": "decimal64",
-                                        "fraction-digits": 3
-                                    }
-                                ]
-                            }
-                        ],
-                        "leaf2a": [
-                            {
-                                "reference": "RFC 6040",
-                                "description": "Numeric leaf inside Container 2a",
-                                "units": "dB",
-                                "nodeType": "leaf",
-                                "default": "2",
-                                "dataType": [
-                                    {
-                                        "range": "1..3|11..13",
-                                        "type": "uint8"
-                                    }
-                                ]
+                                "length": "5..10",
+                                "type": "string"
                             }
                         ]
                     }
@@ -79,9 +119,10 @@
                 "nodeType": "container",
                 "leaf2d": [
                     {
-                        "units": "mm",
                         "nodeType": "leaf",
+                        "units": "mm",
                         "description": "A state attribute",
+                        "config": false,
                         "dataType": [
                             {
                                 "range": "10000..20000",
@@ -90,9 +131,29 @@
                         ]
                     }
                 ],
-                "description": "A second top level container - this one for state attributes",
-                "list2a": [
+                "description": "A second top level container - this one for state attributes. Edit symbol should not be visible",
+                "config": false,
+                "list2b": [
                     {
+                        "nodeType": "list",
+                        "keys": [
+                            "index"
+                        ],
+                        "config": false,
+                        "leaf3c": [
+                            {
+                                "nodeType": "leaf",
+                                "description": "A string attribute in the list",
+                                "config": false,
+                                "dataType": [
+                                    {
+                                        "length": "1..20",
+                                        "type": "string"
+                                    }
+                                ]
+                            }
+                        ],
+                        "description": "A simple list of state items",
                         "index": [
                             {
                                 "nodeType": "leaf",
@@ -103,31 +164,17 @@
                                     }
                                 ]
                             }
-                        ],
-                        "nodeType": "list",
-                        "description": "A simple list of state items",
-                        "leaf3c": [
-                            {
-                                "nodeType": "leaf",
-                                "description": "A string attribute in the list",
-                                "dataType": [
-                                    {
-                                        "type": "string",
-                                        "length": "1..20"
-                                    }
-                                ]
-                            }
                         ]
-                    },
-                    [
-                        [
-                            "test1",
-                            "index"
-                        ]
-                    ]
-                ],
-                "config": false
+                    }
+                ]
             }
         ]
-    }
+    },
+    "modules": {
+        "test1": [
+            "test1",
+            "http://yanguicomponenets.org/test1"
+        ]
+    },
+    "annotations": {}
 }

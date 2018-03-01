@@ -2,16 +2,19 @@
   <div class="row" id="firstRow">
     <div class="col-lg-6 col-sm-8">
 
-      <h3 style="color:blue;"><small><span class="label label-info">Container</span></small>&nbsp;&nbsp;{{ containerModel.name }}</h3>
-    </div>
-    <div class="col-lg-6 col-sm-4 panel panel-default">
-      <blockquote><small>{{ containerModel.description }}</small></blockquote>
-      <small *ngIf="containerModel.reference" class="text-muted">Ref: {{ containerModel.reference }}</small>
-    </div>
-  </div>
-  <div class="row" id="secondRow">
-    <div class="col-lg-6 col-sm-6">
-      <i *ngIf="containerModel.config" class="glyphicon glyphicon-pencil" (click)="toggleEdit()"></i>
+      <h3 style="color:#003377;" data-toggle="tooltip" title="{{ containerModel.description }}">
+        <small>
+        <i class="glyphicon glyphicon-folder-open"></i>
+        <i *ngIf="containerModel.config" class="glyphicon glyphicon-pencil" (click)="toggleEdit()"></i></small>
+        &nbsp;&nbsp;{{ containerModel.name }}</h3>
+      <div class="col-lg-6 col-sm-12" *ngFor="let childDn of yangMetaService.getNextLevelKeys(dn)">
+        <div [ngSwitch]="yangMetaService.metaIndex.get(childDn).nodeType">
+          <container *ngSwitchCase="0" [containerModel]="yangMetaService.metaIndex.get(childDn)" [dn]="childDn"></container>
+          <list *ngSwitchCase="1" [listModel]="yangMetaService.metaIndex.get(childDn)" [dn]="childDn" [valuesMap]="yangDataService.yangValueMap"></list>
+          <leaf *ngSwitchCase="2" [leafModel]="yangMetaService.metaIndex.get(childDn)" [dn]="childDn" [value]="yangDataService.yangValueMap.get(childDn)"></leaf>
+          <p *ngSwitchCase="3">Leaf List Node not yet implemented</p>
+        </div>
+      </div>
     </div>
   </div>
 </div>

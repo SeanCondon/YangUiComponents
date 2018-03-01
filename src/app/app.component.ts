@@ -22,7 +22,7 @@ export class AppComponent implements OnInit {
     this.yangMetaService.ngOnInit();
     //TODO get rid of this dirty hack
     setInterval(() => {
-      this.metaKeys = Array.from(this.yangMetaService.metaIndex.keys());
+      this.metaKeys = Array.from(this.yangMetaService.getTopLevelKeys());
       // console.log("Resfreshing");
     }, 500);
   }

@@ -23,7 +23,7 @@ export class YangMetaService implements OnInit {
   //Recursive function to convert file contents in to Map
   parseYangModel(yangTree: Object, dn: string) {
     for (let yangKey in yangTree) {
-      if (yangKey === 'description' || yangKey === 'nodeType' || yangKey === 'config') { continue; }
+      if (yangKey === 'description' || yangKey === 'nodeType' || yangKey === 'config' || yangKey === 'keys') { continue; }
       console.log("Handling ", yangKey);
       let dnLocal=dn+"/"+yangKey;
       let type: string = yangTree[yangKey][0]['nodeType'];
@@ -34,16 +34,27 @@ export class YangMetaService implements OnInit {
       let mandatory: boolean = yangTree[yangKey][0]['mandatory'];
       let children = yangTree[yangKey][0];
       let nodeTypeArr = yangTree[yangKey][0]['dataType'];
+      let keys: string[] = yangTree[yangKey][0]['keys']
+
 
       if (type != 'leaf' && typeof(children) === 'object') {
         this.parseYangModel(children, dnLocal);
       }
 
       if (type === 'container') {
-        let node = new YangContainerNodeImpl(this.counter++, "", yangKey, NodeType.leaf,
+        let node = new YangContainerNodeImpl(this.counter++, "", yangKey, NodeType.container,
               description, reference, config, mandatory);
         this.metaIndex.set(dnLocal, node);
         console.log("Created: ", dnLocal, type, node);
+
+      } else if (type == 'list') {
+        let node = new YangListNodeImpl(this.counter++, "", yangKey, NodeType.list,
+              description, reference, config, mandatory, keys);
+        this.metaIndex.set(dnLocal, node);
+        node.minElements = yangTree[yangKey][0]['min-elements'];
+        node.maxElements = yangTree[yangKey][0]['max-elements'];
+        console.log("Created: ", dnLocal, type, node);
+
       } else if (type === 'leaf') {
         let node: YangLeafNode = new YangLeafNodeImpl(this.counter++, "", yangKey, NodeType.leaf,
               description, reference, config, mandatory);
@@ -67,8 +78,51 @@ export class YangMetaService implements OnInit {
           this.parseYangModel(data.tree, "");
         },
         err => console.log("Error occured.", err),
-        () => (console.log("Metadata loaded: ", this.metaIndex.size)));
+        () => (console.log("Metadata loaded: ", this.metaIndex.size, " Top Level: ", this.getTopLevelKeys().length)));
     console.log("Elements: ", this.metaIndex.size);
+
+    console.log("Top level Elements: ", this.getTopLevelKeys());
+  }
+
+  getTopLevelKeys() :string[] {
+    let topLevelKeys = new Array<string>();
+    for (let key of Array.from(this.metaIndex.keys())) {
+      let parts: string[] = key.split("/");
+      // for example /test1:cont1a will have 2 parts: null and 'test1:cont1a'
+      if (parts.length == 2) {
+        topLevelKeys.push(key);
+      }
+    }
+    return topLevelKeys;
+  }
+
+  getNextLevelKeys(dn: string): string[] {
+    let nextLevelKeys = new Array<string>();
+    let dnLength = dn.split("/").length;
+
+    //Special case of list - we do not want to return the key(s) of the list
+    //First get the Meta Data Object
+    let metaNode = this.metaIndex.get(dn);
+
+    for (let key of Array.from(this.metaIndex.keys())) {
+      if (!key.startsWith(dn)) { continue; }
+
+      let parts: string[] = key.split("/");
+      // for example /test1:cont1a will have 2 parts: null and 'test1:cont1a'
+      if (parts.length == dnLength+1) {
+        if ( metaNode instanceof YangListNodeImpl ) {
+          let listKeys: Array<string> = (metaNode as YangListNode).keys;
+          let keyLastPart = key.substr(key.lastIndexOf('/')+1);
+          if (listKeys.indexOf(keyLastPart) != -1) {
+            continue;
+          }
+        }
+
+        nextLevelKeys.push(key);
+      }
+    }
+
+    return nextLevelKeys;
   }
 }
 
@@ -107,5 +161,18 @@ class YangContainerNodeImpl implements YangContainerNode {
   constructor(public id: number, public namespace: string,
     public name: string, public nodeType: NodeType, public description: string,
     public reference: string, public config: boolean, public mandatory: boolean) {
+  }
+}
+
+class YangListNodeImpl implements YangListNode {
+  children: YangDataNode[]; //TODO Get ris of this
+  choices: YangChoice[];
+  minElements: number;
+  maxElements: number;
+
+  constructor(public id: number, public namespace: string,
+    public name: string, public nodeType: NodeType, public description: string,
+    public reference: string, public config: boolean, public mandatory: boolean,
+    public keys: string[]) {
   }
 }

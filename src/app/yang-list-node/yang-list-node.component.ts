@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { YangDataNode, YangListNode } from '../YangDataNodes';
+import { YangDataService } from '../YangDataService';
 import { YangMetaService } from '../YangMetaService';
 
 @Component({
@@ -16,7 +17,8 @@ export class YangListNodeComponent implements OnInit {
   childNodes: Map<String, any> = new Map();
   metaKeys: Array<string>;
 
-  constructor(public yangMetaService: YangMetaService) {
+  constructor(public yangMetaService: YangMetaService,
+              public yangDataService: YangDataService) {
     this.metaKeys = Array.from(yangMetaService.metaIndex.keys());
   }
 
@@ -32,13 +34,24 @@ export class YangListNodeComponent implements OnInit {
   }
 
   removePredicate(absoluteDn: string): string {
-    while (absoluteDn.indexOf("=") != -1) {
+    let i=0;
+    while (absoluteDn.indexOf("=") != -1 && i < 10) {
       let eqIdx = absoluteDn.indexOf("=");
       let nextSlash = absoluteDn.substr(eqIdx).indexOf("/");
+      if (nextSlash == -1) { nextSlash = absoluteDn.substr(eqIdx).length}
       let remove = absoluteDn.substr(eqIdx, nextSlash);
       absoluteDn = absoluteDn.replace(remove, "");
+      i=i+1;
     }
     return absoluteDn;
   }
 
+  keyValue(absoluteDn: string): string {
+    let eqIdx = absoluteDn.lastIndexOf("=")+1;
+    return absoluteDn.substr(eqIdx);
+  }
+
+  listLeafDn(metaDn: string, dataDn: string) {
+    return metaDn + dataDn.substring(dataDn.lastIndexOf('/'));
+  }
 }

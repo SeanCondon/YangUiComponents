@@ -52,22 +52,53 @@ module test1 {
       description "Leaf inside Container 1a";
     }
 
+    list list2a {
+      key name;
+      max-elements 4;
+      description "A simple list of configuration items";
 
+      leaf name {
+        type string {
+          length 4..8;
+        }
+        description "The list is keyed by name";
+      }
+
+      leaf tx-power {
+        type uint16 {
+          range 1..20;
+        }
+        units mW;
+        description "Transmit power";
+      }
+    }
+
+
+  }
+
+  leaf leafAtTopLevel {
+    type string {
+      pattern "[A-Z]{3}-[0-9]*";
+    }
+    description "A leaf at the top level (not recommended but must be supported)";
   }
 
   container cont1b-state {
     config false;
-    description "A second top level container - this one for state attributes";
+    description "A second top level container - this one for state attributes. Edit symbol should not be visible";
 
-    list list2a {
+    list list2b {
       key index;
+      config false;
       description "A simple list of state items";
 
       leaf index {
         type uint8;
         description "The list index";
       }
+
       leaf leaf3c {
+        config false;
         type string {
           length 1..20;
         }
@@ -76,6 +107,7 @@ module test1 {
     }
 
     leaf leaf2d {
+      config false;
       type uint16 {
         range 10000..20000;
       }

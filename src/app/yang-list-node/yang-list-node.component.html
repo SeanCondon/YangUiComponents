@@ -1,26 +1,23 @@
 <div class="panel panel-default">
-  <i *ngIf="listModel.config && listNodes.size < listModel.maxElements" class="glyphicon glyphicon-plus-sign">Add</i>
   <div class="row" id="firstRow">
-    <div class="col-lg-6 col-sm-6">
-      <h3 style="color:blue;"><small><span class="label label-info">List</span></small>&nbsp;&nbsp;{{ listModel.name }}</h3>
-    </div>
-    <div class="col-lg-6 col-sm-6 panel panel-default">
-      <blockquote><small>{{ listModel.description }}</small></blockquote>
-      <small *ngIf="listModel.reference" class="text-muted">Ref: {{ listModel.reference }}</small>
+    <div class="col-lg-6 col-sm-8">
+      <h3 [ngClass]="{ 'light':listModel.config, 'dark':!listModel.config }" data-toggle="tooltip" title="{{ listModel.description }}">
+        <small>
+          <i class="glyphicon glyphicon-list"></i>
+          <i *ngIf="listModel.config && (!listModel.maxElements || listNodes.size < listModel.maxElements)" class="glyphicon glyphicon-plus-sign"></i>
+        </small>&nbsp;&nbsp;{{ listModel.name }}</h3>
     </div>
   </div>
-  <div *ngFor="let listNodeDn of listNodes.keys()">
-    <div class="row" id="secondRow">
-      <div class="col-lg-3 col-sm-4">
-        <i *ngIf="listModel.config" class="glyphicon glyphicon-pencil" (click)="toggleEdit()"></i>
-        <i *ngIf="listModel.config && listNodes.size > listModel.minElements" class="glyphicon glyphicon-minus-sign">Remove</i>
-        <div *ngFor="let childNode of childNodes.keys()">
-          <p>{{ childNode }}</p>
-          <div [ngSwitch]="yangMetaService.metaIndex.get(removePredicate(childNode)).nodeType">
-            <container *ngSwitchCase="0" [containerModel]="yangMetaService.metaIndex.get(listNodeDn.substr(0,listNodeDn.lastIndexOf('=')))" [dn]="listNodeDn"></container>
-            <leaf *ngSwitchCase="2" [leafModel]="yangMetaService.metaIndex.get(removePredicate(childNode))" [dn]="childNode" [value]="20"></leaf>
-          </div>
-        </div>
+  <div *ngFor="let listNodeDn of yangDataService.getListKeys(dn)">
+    <h3><small>
+        <i *ngIf="listModel.config && (!listModel.minElements || listNodes.size > listModel.minElements)" class="glyphicon glyphicon-minus-sign"></i>
+      </small>&nbsp;{{ this.keyValue(listNodeDn) }}</h3>
+    <div *ngFor="let childDn of yangMetaService.getNextLevelKeys(this.removePredicate(listNodeDn))">
+      <div [ngSwitch]="yangMetaService.metaIndex.get(childDn).nodeType">
+        <container *ngSwitchCase="0" [containerModel]="yangMetaService.metaIndex.get(childDn)" [dn]="childDn"></container>
+        <list *ngSwitchCase="1" [listModel]="yangMetaService.metaIndex.get(childDn)" [dn]="childDn" [valuesMap]="yangDataService.yangValueMap"></list>
+        <leaf *ngSwitchCase="2" [leafModel]="yangMetaService.metaIndex.get(childDn)" [dn]="childDn" [value]="yangDataService.yangValueMap.get(this.listLeafDn(listNodeDn,childDn))"></leaf>
+        <p *ngSwitchCase="3">Leaf List Node not yet implemented</p>
       </div>
     </div>
   </div>
