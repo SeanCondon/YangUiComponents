@@ -10,6 +10,7 @@ export class YangLeafNodeComponent implements OnInit {
   @Input() leafModel: YangLeafNode;
   @Input() dn: string;
   @Input() value: any;
+  @Input() parentEdit: boolean = false;
   exists: boolean = false;
   editMode: boolean = false;
 

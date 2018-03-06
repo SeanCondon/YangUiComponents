@@ -1,6 +1,6 @@
 <div [formGroup]="leafNumberForm">
 <label for="leafNumberValue">{{ typenames[numberType] }} ({{ activeMin }}-{{ activeMax }}) {{ range }}</label>
-<input [formControl]="leafNumberForm.controls['leafNumberValue']" type="number" class="form-control"
+<input [formControl]="leafNumberForm.controls['leafNumberValue']" type="number" step="{{ getStep() }}" class="form-control"
   required formControlName="leafNumberValue" >
 
 

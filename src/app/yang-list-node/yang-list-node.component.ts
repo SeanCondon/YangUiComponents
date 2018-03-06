@@ -12,10 +12,13 @@ export class YangListNodeComponent implements OnInit {
   @Input() listModel: YangListNode;
   @Input() dn: string;
   @Input() valuesMap: Map<String, any>;
+  @Input() parentEdit: boolean = false;
 
   listNodes: Map<String, any> = new Map();
   childNodes: Map<String, any> = new Map();
   metaKeys: Array<string>;
+  listEdit: boolean = false;
+  addMode: boolean = false;
 
   constructor(public yangMetaService: YangMetaService,
               public yangDataService: YangDataService) {

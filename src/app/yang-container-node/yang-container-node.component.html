@@ -5,13 +5,17 @@
       <h3 style="color:#003377;" data-toggle="tooltip" title="{{ containerModel.description }}">
         <small>
         <i class="glyphicon glyphicon-folder-open"></i>
-        <i *ngIf="containerModel.config" class="glyphicon glyphicon-pencil" (click)="toggleEdit()"></i></small>
-        &nbsp;&nbsp;{{ containerModel.name }}</h3>
+        <i *ngIf="containerModel.config && !(parentEdit || containerEdit)" class="glyphicon glyphicon-pencil" (click)="toggleEdit()"></i>
+        <i *ngIf="containerEdit" class="glyphicon glyphicon-remove-sign" (click)="toggleEdit()"></i>
+        <i *ngIf="containerEdit" class="glyphicon glyphicon-ok-sign"></i>
+      </small>
+        &nbsp;&nbsp;{{ containerModel.name }}&nbsp;
+      </h3>
       <div class="col-lg-6 col-sm-12" *ngFor="let childDn of yangMetaService.getNextLevelKeys(dn)">
         <div [ngSwitch]="yangMetaService.metaIndex.get(childDn).nodeType">
-          <container *ngSwitchCase="0" [containerModel]="yangMetaService.metaIndex.get(childDn)" [dn]="childDn"></container>
-          <list *ngSwitchCase="1" [listModel]="yangMetaService.metaIndex.get(childDn)" [dn]="childDn" [valuesMap]="yangDataService.yangValueMap"></list>
-          <leaf *ngSwitchCase="2" [leafModel]="yangMetaService.metaIndex.get(childDn)" [dn]="childDn" [value]="yangDataService.yangValueMap.get(childDn)"></leaf>
+          <container *ngSwitchCase="0" [containerModel]="yangMetaService.metaIndex.get(childDn)" [parentEdit]="containerEdit || parentEdit" [dn]="childDn"></container>
+          <list *ngSwitchCase="1" [listModel]="yangMetaService.metaIndex.get(childDn)" [dn]="childDn" [parentEdit]="containerEdit || parentEdit" [valuesMap]="yangDataService.yangValueMap"></list>
+          <leaf *ngSwitchCase="2" [leafModel]="yangMetaService.metaIndex.get(childDn)" [dn]="childDn" [parentEdit]="containerEdit || parentEdit" [value]="yangDataService.yangValueMap.get(childDn)"></leaf>
           <p *ngSwitchCase="3">Leaf List Node not yet implemented</p>
         </div>
       </div>

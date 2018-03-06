@@ -11,7 +11,7 @@ export class YangNumericValueComponent implements YangLeafValueComponent, OnInit
   @Input() minimum: number;
   @Input() maximum: number;
   @Input() numberType: YangType = YangType.uint8;
-  @Input() decimalPlaces: number;
+  @Input() decimalPlaces: number = 0;
   @Input() range: string;
   @Input() attrName: string = "Value";
   @Input() leafValue: number;
@@ -84,6 +84,10 @@ export class YangNumericValueComponent implements YangLeafValueComponent, OnInit
       ranges.push(newRange);
     }
     return ranges;
+  }
+
+  getStep() {
+    return Math.pow(10, -this.decimalPlaces);
   }
 }
 

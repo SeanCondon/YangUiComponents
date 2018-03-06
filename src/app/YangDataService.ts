@@ -42,4 +42,15 @@ export class YangDataService {
     }
     return keyInstances;
   }
+
+  removeListItem(listNodeDn: string): number {
+    let count = 0;
+    for (let dn of Array.from(this.yangValueMap.keys())) {
+      if (!dn.startsWith(listNodeDn)) { continue; }
+      this.yangValueMap.delete(dn);
+      count = count+1;
+    }
+    console.log("Deleting ", listNodeDn, " and ", count, " children");
+    return count;
+  }
 }

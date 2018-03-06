@@ -11,6 +11,8 @@ import { YangDataNode, YangContainerNode } from '../YangDataNodes';
 export class YangContainerNodeComponent implements OnInit {
   @Input() containerModel: YangContainerNode;
   @Input() dn: string;
+  @Input() parentEdit: boolean = false;
+  containerEdit: boolean = false;
 
   constructor(public yangMetaService: YangMetaService,
               public yangDataService: YangDataService) { }
@@ -18,4 +20,7 @@ export class YangContainerNodeComponent implements OnInit {
   ngOnInit() {
   }
 
+  toggleEdit() {
+    this.containerEdit = !this.containerEdit;
+  }
 }

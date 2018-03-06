@@ -36,7 +36,6 @@ export class YangMetaService implements OnInit {
       let nodeTypeArr = yangTree[yangKey][0]['dataType'];
       let keys: string[] = yangTree[yangKey][0]['keys']
 
-
       if (type != 'leaf' && typeof(children) === 'object') {
         this.parseYangModel(children, dnLocal);
       }
@@ -61,6 +60,7 @@ export class YangMetaService implements OnInit {
         node.setTypedef(nodeTypeArr[0]['type']);
         node.range = nodeTypeArr[0]['range'];
         node.length = nodeTypeArr[0]['length'];
+        node.decimalPlaces = nodeTypeArr[0]['fraction-digits'];
         node.units = units;
         this.metaIndex.set(dnLocal, node);
         console.log("Created: ", dnLocal, type, node);
@@ -96,7 +96,7 @@ export class YangMetaService implements OnInit {
     return topLevelKeys;
   }
 
-  getNextLevelKeys(dn: string): string[] {
+  getNextLevelKeys(dn: string, listKeysOnly: boolean = false): string[] {
     let nextLevelKeys = new Array<string>();
     let dnLength = dn.split("/").length;
 
@@ -114,16 +114,18 @@ export class YangMetaService implements OnInit {
           let listKeys: Array<string> = (metaNode as YangListNode).keys;
           let keyLastPart = key.substr(key.lastIndexOf('/')+1);
           if (listKeys.indexOf(keyLastPart) != -1) {
-            continue;
+            if (listKeysOnly) { nextLevelKeys.push(key); }
+            else continue;
           }
         }
 
-        nextLevelKeys.push(key);
+        if (!listKeysOnly) { nextLevelKeys.push(key); }
       }
     }
 
     return nextLevelKeys;
   }
+
 }
 
 class YangLeafNodeImpl implements YangLeafNode {
@@ -135,6 +137,7 @@ class YangLeafNodeImpl implements YangLeafNode {
   length: string;
   patterns: RegExp[];
   range: string;
+  decimalPlaces: number = 0;
 
   constructor(public id: number, public namespace: string,
     public name: string, public nodeType: NodeType, public description: string,
@@ -155,7 +158,6 @@ class YangLeafNodeImpl implements YangLeafNode {
 }
 
 class YangContainerNodeImpl implements YangContainerNode {
-  children: YangDataNode[];
   choices: YangChoice[];
 
   constructor(public id: number, public namespace: string,
@@ -165,7 +167,6 @@ class YangContainerNodeImpl implements YangContainerNode {
 }
 
 class YangListNodeImpl implements YangListNode {
-  children: YangDataNode[]; //TODO Get ris of this
   choices: YangChoice[];
   minElements: number;
   maxElements: number;

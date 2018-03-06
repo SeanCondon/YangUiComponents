@@ -31,13 +31,13 @@ export interface YangLeafNode extends YangDataNode {
   max: number;
   length: string;
   patterns: RegExp[];
+  decimalPlaces: number;
   range: string;
 
   setTypedef(typeStr: string): void;
 }
 
 export interface YangContainerNode extends YangDataNode {
-  children: YangDataNode[];
   choices: YangChoice[];
 }
 

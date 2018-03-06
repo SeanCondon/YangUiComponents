@@ -4,19 +4,37 @@
       <h3 [ngClass]="{ 'light':listModel.config, 'dark':!listModel.config }" data-toggle="tooltip" title="{{ listModel.description }}">
         <small>
           <i class="glyphicon glyphicon-list"></i>
-          <i *ngIf="listModel.config && (!listModel.maxElements || listNodes.size < listModel.maxElements)" class="glyphicon glyphicon-plus-sign"></i>
+          <i *ngIf="listModel.config && (!listModel.maxElements || listNodes.size < listModel.maxElements) && !addMode" class="glyphicon glyphicon-plus-sign" (click)="addMode = !addMode"></i>
+          <i *ngIf="addMode" class="glyphicon glyphicon-remove-sign" (click)="addMode = !addMode"></i>
+          <i *ngIf="addMode" class="glyphicon glyphicon-ok-sign"></i>
         </small>&nbsp;&nbsp;{{ listModel.name }}</h3>
     </div>
   </div>
-  <div *ngFor="let listNodeDn of yangDataService.getListKeys(dn)">
+  <div *ngFor="let listNodeDn of yangDataService.getListKeys(dn)" class="row" id="nthRow">
     <h3><small>
-        <i *ngIf="listModel.config && (!listModel.minElements || listNodes.size > listModel.minElements)" class="glyphicon glyphicon-minus-sign"></i>
+        <i *ngIf="listModel.config && (!listModel.minElements || listNodes.size > listModel.minElements) && !(parentEdit || listEdit)" class="glyphicon glyphicon-minus-sign" (click)="yangDataService.removeListItem(listNodeDn)"></i>
+        <i *ngIf="listModel.config && !(parentEdit || listEdit)" class="glyphicon glyphicon-pencil" (click)="listEdit = !listEdit"></i>
+        <i *ngIf="listEdit" class="glyphicon glyphicon-remove-sign" (click)="listEdit = !listEdit"></i>
+        <i *ngIf="listEdit" class="glyphicon glyphicon-ok-sign"></i>
       </small>&nbsp;{{ this.keyValue(listNodeDn) }}</h3>
     <div *ngFor="let childDn of yangMetaService.getNextLevelKeys(this.removePredicate(listNodeDn))">
       <div [ngSwitch]="yangMetaService.metaIndex.get(childDn).nodeType">
-        <container *ngSwitchCase="0" [containerModel]="yangMetaService.metaIndex.get(childDn)" [dn]="childDn"></container>
-        <list *ngSwitchCase="1" [listModel]="yangMetaService.metaIndex.get(childDn)" [dn]="childDn" [valuesMap]="yangDataService.yangValueMap"></list>
-        <leaf *ngSwitchCase="2" [leafModel]="yangMetaService.metaIndex.get(childDn)" [dn]="childDn" [value]="yangDataService.yangValueMap.get(this.listLeafDn(listNodeDn,childDn))"></leaf>
+        <container *ngSwitchCase="0" [containerModel]="yangMetaService.metaIndex.get(childDn)" [parentEdit]="listEdit || parentEdit" [dn]="childDn"></container>
+        <list *ngSwitchCase="1" [listModel]="yangMetaService.metaIndex.get(childDn)" [dn]="childDn" [parentEdit]="listEdit || parentEdit" [valuesMap]="yangDataService.yangValueMap"></list>
+        <leaf *ngSwitchCase="2" [leafModel]="yangMetaService.metaIndex.get(childDn)" [dn]="childDn" [parentEdit]="listEdit || parentEdit" [value]="yangDataService.yangValueMap.get(this.listLeafDn(listNodeDn,childDn))"></leaf>
+        <p *ngSwitchCase="3">Leaf List Node not yet implemented</p>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="addMode" class="row" id="newRow">
+    <div *ngFor="let listkeyDn of yangMetaService.getNextLevelKeys(dn, true)">
+      <leaf [leafModel]="yangMetaService.metaIndex.get(listkeyDn)" [dn]="listkeyDn" [parentEdit]="true"></leaf>
+    </div>
+    <div *ngFor="let childDn of yangMetaService.getNextLevelKeys(dn)">
+      <div [ngSwitch]="yangMetaService.metaIndex.get(childDn).nodeType">
+        <container *ngSwitchCase="0" [containerModel]="yangMetaService.metaIndex.get(childDn)" [parentEdit]="true" [dn]="childDn"></container>
+        <list *ngSwitchCase="1" [listModel]="yangMetaService.metaIndex.get(childDn)" [parentEdit]="true" [dn]="childDn"></list>
+        <leaf *ngSwitchCase="2" [leafModel]="yangMetaService.metaIndex.get(childDn)" [parentEdit]="true" [dn]="childDn"></leaf>
         <p *ngSwitchCase="3">Leaf List Node not yet implemented</p>
       </div>
     </div>
